@@ -118,7 +118,6 @@ function build() {
                 --enable-wayland-shm \
                 --enable-wayland-egl \
                 --enable-gl-flavor-gles \
-                --enable-build-examples \
             "
             ;;
         ecore)
