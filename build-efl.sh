@@ -114,7 +114,6 @@ function build() {
     case $mod in
         evas)
             mod_config_options=" \
-                --enable-gl-xcb \
                 --enable-gl-xlib \
                 --enable-pthreads \
                 --enable-cpu-sse3 \
@@ -125,7 +124,6 @@ function build() {
             ;;
         ecore)
             mod_config_options=" \
-                --disable-ecore-evas-software-16-x11 \
                 --enable-ecore-evas-opengl-x11 \
                 --enable-ecore-wayland \
                 --enable-ecore-evas-wayland-shm \
