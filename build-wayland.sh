@@ -92,7 +92,7 @@ function prepare_build() {
 
     CONFIG_OPTIONS="--prefix=$PREFIX --libdir=$LIBDIR --sysconfdir=$SYSCONFDIR --localstatedir=$LOCALSTATEDIR"
 
-    WLD_BUILD_FLAGS="-W -Wall -Wextra -march=native -ffast-math -I$PREFIX/include"
+    WLD_BUILD_FLAGS="-g -O2 -W -Wall -Wextra -march=native -ffast-math -I$PREFIX/include"
     export CFLAGS="$WLD_BUILD_FLAGS"
     export CXXFLAGS="$WLD_BUILD_FLAGS"
     export LDFLAGS="-L$LIBDIR"

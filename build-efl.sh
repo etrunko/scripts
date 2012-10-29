@@ -96,7 +96,10 @@ function prepare_build() {
 
     CONFIG_OPTIONS="--prefix=$PREFIX --libdir=$LIBDIR --sysconfdir=$SYSCONFDIR --localstatedir=$LOCALSTATEDIR"
 
-    E_COMPILER_FLAGS="-g -O2 -W -Wall -Wextra -march=native -ffast-math -I$PREFIX/include"
+    E_BUILD_FLAGS="-g -O2 -W -Wall -Wextra -march=native -ffast-math -I$PREFIX/include"
+    export CFLAGS="$E_BUILD_FLAGS"
+    export CXXFLAGS="$E_BUILD_FLAGS"
+    export LDFLAGS="-L$LIBDIR"
 
     ACLOCAL_INCLUDE_DIR="$PREFIX/share/aclocal"
     [ -d $ACLOCAL_INCLUDE_DIR ] || mkdir -p $ACLOCAL_INCLUDE_DIR > /dev/null 2>&1
@@ -158,7 +161,7 @@ function build() {
         if [ -z "$E_NO_CONFIGURE" ] && [ -x ./autogen.sh ]; then
             rm -f m4/libtool.m4
             NOCONFIGURE=1 ./autogen.sh >> build.log 2>&1 || die "$mod: error running autogen.sh"
-            CFLAGS="$E_COMPILER_FLAGS" CXXFLAGS="$E_COMPILER_FLAGS" LDFLAGS="$E_LINKER_FLAGS" ./configure $CONFIG_OPTIONS $mod_config_options $E_CONFIG_OPTIONS >> build.log 2>&1 || die "$mod: error running configure"
+            ./configure $CONFIG_OPTIONS $mod_config_options $E_CONFIG_OPTIONS >> build.log 2>&1 || die "$mod: error running configure"
         fi
 
         $MAKE >> build.log 2>&1 || die "$mod: error building"
