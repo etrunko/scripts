@@ -183,7 +183,6 @@ function run_all() {
     evas \
     ecore \
     eio \
-    embryo \
     edje \
     e_dbus \
     efreet \
