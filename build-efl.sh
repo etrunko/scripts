@@ -49,10 +49,10 @@ function clone() {
         epdf | libeweather | exchange | emap | emage | etrophy)
             mod_path="PROTO"
             ;;
-        eskiss | e_cho | efbb | econcentration )
+        eskiss | e_cho | efbb | econcentration)
             mod_path="GAMES"
             ;;
-        efl)
+        efl | edbus)
             GIT_ROOT="git://github.com/etrunko"
             ;;
         *)
@@ -187,6 +187,7 @@ function run_all() {
     eio \
     edje \
     e_dbus \
+    edbus \
     efreet \
     eeze \
     emotion \
