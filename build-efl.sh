@@ -112,7 +112,7 @@ function build() {
     echo "build $mod..."
 
     case $mod in
-        evas)
+        efl)
             mod_config_options=" \
                 --enable-gl-xlib \
                 --enable-pthreads \
@@ -181,7 +181,6 @@ function run_all() {
 
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
-    evas \
     expedite \
     ecore \
     eio \
