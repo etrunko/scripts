@@ -163,7 +163,7 @@ function build() {
         fi
 
         $MAKE >> build.log 2>&1 || die "$mod: error building"
-        $MAKE install >> build.log 2>&1 || die "$mod: error installing"
+        $MAKE -j 1 install >> build.log 2>&1 || die "$mod: error installing"
     _popd
 
 }
