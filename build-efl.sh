@@ -182,6 +182,7 @@ function run_all() {
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     evas \
+    expedite \
     ecore \
     eio \
     edje \
