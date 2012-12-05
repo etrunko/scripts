@@ -120,10 +120,6 @@ function build() {
                 --enable-wayland-shm \
                 --enable-wayland-egl \
                 --enable-gl-flavor-gles \
-            "
-            ;;
-        ecore)
-            mod_config_options=" \
                 --enable-ecore-evas-opengl-x11 \
                 --enable-ecore-wayland \
                 --enable-ecore-evas-wayland-shm \
@@ -182,8 +178,8 @@ function run_all() {
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     expedite \
-    ecore \
     eio \
+    ephysics \
     edje \
     e_dbus \
     edbus \
