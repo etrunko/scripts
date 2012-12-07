@@ -52,9 +52,6 @@ function clone() {
         eskiss | e_cho | efbb | econcentration)
             mod_path="GAMES"
             ;;
-        efl | edbus)
-            GIT_ROOT="git://github.com/etrunko"
-            ;;
         *)
             mod_path=""
             ;;
@@ -178,7 +175,6 @@ function run_all() {
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     expedite \
-    eio \
     ephysics \
     edje \
     e_dbus \
