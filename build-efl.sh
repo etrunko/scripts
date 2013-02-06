@@ -172,6 +172,8 @@ function run_all() {
 #### Begin
 ####
 
+E_MODULES=$@
+
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     expedite \

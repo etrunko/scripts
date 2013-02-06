@@ -165,6 +165,8 @@ function run_all() {
 #### Begin
 ####
 
+WLD_MODULES=$@
+
 [ -z "$WLD_MODULES" ] && WLD_MODULES=" \
     libxkbcommon \
     wayland \
