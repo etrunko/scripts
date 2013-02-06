@@ -111,16 +111,11 @@ function build() {
     case $mod in
         efl)
             mod_config_options=" \
-                --enable-gl-xlib \
-                --enable-pthreads \
-                --enable-cpu-sse3 \
-                --enable-wayland-shm \
-                --enable-wayland-egl \
-                --enable-gl-flavor-gles \
-                --enable-ecore-evas-opengl-x11 \
-                --enable-ecore-wayland \
-                --enable-ecore-evas-wayland-shm \
-                --enable-ecore-evas-wayland-egl \
+                --with-profile=release
+                --disable-static \
+                --enable-wayland \
+                --enable-egl \
+                --with-opengl=es \
             "
             ;;
         epdf)
@@ -136,9 +131,9 @@ function build() {
                 --disable-quick-launch \
             "
             ;;
-        e_dbus)
+        expedite)
             mod_config_options=" \
-                --disable-edbus-performance-test \
+                --disable-fb \
             "
             ;;
         *)
@@ -176,16 +171,9 @@ E_MODULES=$@
 
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
+    evas_generic_loaders \
     expedite \
-    ephysics \
-    edje \
-    e_dbus \
-    edbus \
-    efreet \
-    eeze \
-    emotion \
     epdf \
-    ethumb \
     elementary \
     terminology \
 "
