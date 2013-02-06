@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -z "$MAKEFLAGS" ] && export MAKEFLAGS="-j -l 10"
+[ -z "$MAKE" ]      && export MAKE="chrt --idle 0 make"
 ####
 #### Functions
 ####
@@ -76,9 +78,7 @@ function update() {
 }
 
 function prepare_build() {
-    [ -z "$PREFIX" ]      && PREFIX="$HOME/install/usr"
-    [ -z "$MAKEFLAGS" ]   && export MAKEFLAGS="-j -l 10"
-    [ -z "$MAKE" ]        && export MAKE="chrt --idle 0 make"
+    [ -z "$PREFIX" ] && PREFIX="$HOME/install/usr"
 
     local arch=`which arch`
     [ $? -eq 0 ]          && ARCH=`$arch`           || ARCH=""
