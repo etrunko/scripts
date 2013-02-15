@@ -54,6 +54,9 @@ function clone() {
         eskiss | e_cho | efbb | econcentration)
             mod_path="GAMES"
             ;;
+        efl)
+            GIT_ROOT="git://git.enlightenment.org/core"
+            ;;
         *)
             mod_path=""
             ;;
