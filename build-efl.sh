@@ -28,11 +28,11 @@ function cleanup() {
 
     _pushd $mod
         if [ -f Makefile ]; then
-            $MAKE uninstall > /dev/null 2>&1
-            $MAKE distclean > /dev/null 2>&1
+            sudo $MAKE uninstall > /dev/null 2>&1
+            sudo $MAKE distclean > /dev/null 2>&1
         fi
         rm -rf autom4te.cache
-        git clean -d -x -f > /dev/null 2>&1
+        sudo git clean -d -x -f > /dev/null 2>&1
         [ -d po/ ] && git checkout po/ > /dev/null 2>&1
     _popd
 }
@@ -41,24 +41,35 @@ function clone() {
     local mod=$1
     echo "clone $mod..."
 
-    local GIT_ROOT="git://git.enlightenment.fr/vcs/svn"
-    local mod_path=""
+    local GIT_ROOT="ssh://git@git.enlightenment.org"
+    local mod_path="core"
 
     case $mod in
         python-*)
-            mod_path="BINDINGS/python"
+            mod_path="legacy/bindings/python"
             ;;
-        epdf | libeweather | exchange | emap | emage | etrophy)
+        libeweather )
+            mod_path="libs"
+            ;;
+        epdf | exchange | emap | emage )
+            GIT_ROOT="git://git.enlightenment.fr/vcs/svn"
             mod_path="PROTO"
             ;;
-        eskiss | e_cho | efbb | econcentration)
+        eskiss )
+            GIT_ROOT="git://git.enlightenment.fr/vcs/svn"
             mod_path="GAMES"
             ;;
-        efl | elementary | enlightenment)
-            GIT_ROOT="git://git.enlightenment.org/core"
+        e_cho | efbb | econcentration | elemines | etrophy )
+            mod_path="games"
             ;;
-        *)
-            mod_path=""
+        engage | comp-scale | forecasts )
+            mod_path="enlightenment/modules"
+            ;;
+        ephoto | enjoy | ecrire | equate | terminology )
+            mod_path="apps"
+            ;;
+        closeau | expedite)
+            mod_path="tools"
             ;;
     esac
 
@@ -82,7 +93,7 @@ function update() {
 }
 
 function prepare_build() {
-    [ -z "$PREFIX" ]      && PREFIX="$HOME/install/usr"
+    [ -z "$PREFIX" ]      && PREFIX="/usr"
 
     local arch=`which arch`
     [ $? -eq 0 ]          && ARCH=`$arch`           || ARCH=""
@@ -114,11 +125,9 @@ function build() {
     case $mod in
         efl)
             mod_config_options=" \
-                --with-profile=release
+                --with-profile=dev \
                 --disable-static \
-                --enable-wayland \
-                --enable-egl \
-                --with-opengl=es \
+                --with-opengl=full \
             "
             ;;
         epdf)
@@ -130,7 +139,6 @@ function build() {
         elementary)
             mod_config_options=" \
                 --disable-eweather \
-                --disable-emap \
                 --disable-quick-launch \
             "
             ;;
@@ -154,7 +162,7 @@ function build() {
         fi
 
         $MAKE >> build.log 2>&1 || die "$mod: error building"
-        $MAKE -j 1 install >> build.log 2>&1 || die "$mod: error installing"
+        sudo $MAKE -j 1 install >> build.log 2>&1 || die "$mod: error installing"
     _popd
 
 }
@@ -175,10 +183,12 @@ E_MODULES=$@
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     evas_generic_loaders \
-    expedite \
-    epdf \
+    emotion_generic_players \
+    emap \
     elementary \
     terminology \
+    enlightenment \
+    forecasts \
 "
 
 # Cleanup (set E_NO_CLEANUP to bypass)
