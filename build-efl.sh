@@ -2,16 +2,17 @@
 
 [ -z "$MAKEFLAGS" ] && export MAKEFLAGS="-j -l 10"
 [ -z "$MAKE" ]      && export MAKE="chrt --idle 0 make"
+[ -z "$E_VERBOSE" ] && export OUTPUT="/dev/null" BUILD_OUTPUT="build.log" || export OUTPUT="/dev/stdout" BUILD_OUTPUT="/dev/stdout"
 ####
 #### Functions
 ####
 
 function _pushd() {
-    pushd ./$mod_dir/$1 > /dev/null
+    pushd ./$mod_dir/$1 > $OUTPUT
 }
 
 function _popd() {
-    popd > /dev/null
+    popd > $OUTPUT
 }
 
 function die() {
@@ -28,12 +29,12 @@ function cleanup() {
 
     _pushd $mod
         if [ -f Makefile ]; then
-            sudo $MAKE uninstall > /dev/null 2>&1
-            sudo $MAKE distclean > /dev/null 2>&1
+            sudo $MAKE uninstall > $OUTPUT 2>&1
+            sudo $MAKE distclean > $OUTPUT 2>&1
         fi
         rm -rf autom4te.cache
-        sudo git clean -d -x -f > /dev/null 2>&1
-        [ -d po/ ] && git checkout po/ > /dev/null 2>&1
+        sudo git clean -d -x -f > $OUTPUT 2>&1
+        [ -d po/ ] && git checkout po/ > $OUTPUT 2>&1
     _popd
 }
 
@@ -75,7 +76,8 @@ function clone() {
 
     [ -z "$mod_path" ] && GIT_URI=$GIT_ROOT/$mod || GIT_URI=$GIT_ROOT/$mod_path/$mod
 
-    $E_PROXY_CMD git clone $GIT_URI > /dev/null 2>&1 || die "Error cloning $mod from $GIT_URI"
+    $E_PROXY_CMD git clone $GIT_URI > $OUTPUT 2>&1 || die "Error cloning $mod from $GIT_URI"
+    ctags -R
 }
 
 function update() {
@@ -88,7 +90,10 @@ function update() {
 
     echo "update $mod..."
     _pushd $mod
-        $E_PROXY_CMD git pull --rebase > /dev/null 2>&1 || die "Error updating $mod"
+        git co po > $OUTPUT 2>&1
+        $E_PROXY_CMD git pull --rebase > $OUTPUT 2>&1 || die "Error updating $mod"
+        git gc > $OUTPUT 2>&1
+        ctags -R > $OUTPUT 2>&1
     _popd
 }
 
@@ -113,7 +118,7 @@ function prepare_build() {
     export LDFLAGS="-L$LIBDIR"
 
     ACLOCAL_INCLUDE_DIR="$PREFIX/share/aclocal"
-    [ -d $ACLOCAL_INCLUDE_DIR ] || mkdir -p $ACLOCAL_INCLUDE_DIR > /dev/null 2>&1
+    [ -d $ACLOCAL_INCLUDE_DIR ] || mkdir -p $ACLOCAL_INCLUDE_DIR > $OUTPUT 2>&1
     export ACLOCAL="aclocal -I$ACLOCAL_INCLUDE_DIR"
 }
 
@@ -157,12 +162,12 @@ function build() {
 
         if [ -z "$E_NO_CONFIGURE" ] && [ -x ./autogen.sh ]; then
             rm -f m4/libtool.m4
-            NOCONFIGURE=1 ./autogen.sh >> build.log 2>&1 || die "$mod: error running autogen.sh"
-            ./configure $CONFIG_OPTIONS $mod_config_options $E_CONFIG_OPTIONS >> build.log 2>&1 || die "$mod: error running configure"
+            NOCONFIGURE=1 ./autogen.sh >> $BUILD_OUTPUT 2>&1 || die "$mod: error running autogen.sh"
+            ./configure $CONFIG_OPTIONS $mod_config_options $E_CONFIG_OPTIONS >> $BUILD_OUTPUT 2>&1 || die "$mod: error running configure"
         fi
 
-        $MAKE >> build.log 2>&1 || die "$mod: error building"
-        sudo $MAKE -j 1 install >> build.log 2>&1 || die "$mod: error installing"
+        $MAKE >> $BUILD_OUTPUT 2>&1 || die "$mod: error building"
+        sudo $MAKE -j 1 install >> $BUILD_OUTPUT 2>&1 || die "$mod: error installing"
     _popd
 
 }
