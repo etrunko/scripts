@@ -66,11 +66,14 @@ function clone() {
         engage | comp-scale | forecasts )
             mod_path="enlightenment/modules"
             ;;
-        ephoto | enjoy | ecrire | equate | terminology )
+        ephoto | enjoy | ecrire | equate | terminology | eruler | rage | empc )
             mod_path="apps"
             ;;
         closeau | expedite)
             mod_path="tools"
+            ;;
+        maelstrom )
+            mod_path="devs/discomfitor"
             ;;
     esac
 
@@ -131,8 +134,10 @@ function build() {
         efl)
             mod_config_options=" \
                 --with-profile=dev \
-                --disable-static \
-                --with-opengl=full \
+                --enable-egl \
+                --with-opengl=es \
+                --enable-wayland \
+                --enable-systemd \
             "
             ;;
         epdf)
@@ -144,6 +149,7 @@ function build() {
         elementary)
             mod_config_options=" \
                 --disable-eweather \
+                --disable-emap \
                 --disable-quick-launch \
             "
             ;;
@@ -183,17 +189,18 @@ function run_all() {
 #### Begin
 ####
 
-E_MODULES=$@
-
+[ -z "$E_MODULES" ] && E_MODULES=$@
 [ -z "$E_MODULES" ] && E_MODULES=" \
     efl \
     evas_generic_loaders \
     emotion_generic_players \
-    emap \
     elementary \
+    eruler \
     terminology \
+    rage \
     enlightenment \
-    forecasts \
+    maelstrom \
+    empc \
 "
 
 # Cleanup (set E_NO_CLEANUP to bypass)
