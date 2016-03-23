@@ -52,15 +52,7 @@ function clone() {
         libeweather )
             mod_path="libs"
             ;;
-        epdf | exchange | emap | emage )
-            GIT_ROOT="git://git.enlightenment.fr/vcs/svn"
-            mod_path="PROTO"
-            ;;
-        eskiss )
-            GIT_ROOT="git://git.enlightenment.fr/vcs/svn"
-            mod_path="GAMES"
-            ;;
-        e_cho | efbb | econcentration | elemines | etrophy )
+        e_cho | efbb | econcentration | elemines | etrophy | eskiss )
             mod_path="games"
             ;;
         engage | comp-scale | forecasts )
@@ -101,9 +93,9 @@ function update() {
 }
 
 function prepare_build() {
-    [ -z "$PREFIX" ]      && PREFIX="/usr"
-
     local arch=`which arch`
+
+    [ -z "$PREFIX" ]      && PREFIX="/usr"
     [ $? -eq 0 ]          && ARCH=`$arch`           || ARCH=""
     [ $ARCH == "x86_64" ] && LIBDIR="$PREFIX/lib64" || LIBDIR="$PREFIX/lib"
     [ $PREFIX == "/usr" ] && SYSCONFDIR="/etc"      || SYSCONFDIR="$PREFIX/etc"
