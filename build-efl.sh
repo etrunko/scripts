@@ -138,13 +138,6 @@ function build() {
                 --disable-mupdf \
             "
             ;;
-        elementary)
-            mod_config_options=" \
-                --disable-eweather \
-                --disable-emap \
-                --disable-quick-launch \
-            "
-            ;;
         expedite)
             mod_config_options=" \
                 --disable-fb \
@@ -186,7 +179,6 @@ function run_all() {
     efl \
     evas_generic_loaders \
     emotion_generic_players \
-    elementary \
     eruler \
     terminology \
     rage \
