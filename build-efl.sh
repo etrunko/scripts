@@ -58,7 +58,7 @@ function clone() {
         engage | comp-scale | forecasts )
             mod_path="enlightenment/modules"
             ;;
-        ephoto | enjoy | ecrire | equate | terminology | eruler | rage | empc )
+        ephoto | enjoy | ecrire | equate | terminology | eruler | rage | empc | emprint )
             mod_path="apps"
             ;;
         closeau | expedite)
@@ -128,7 +128,6 @@ function build() {
                 --with-profile=dev \
                 --enable-egl \
                 --with-opengl=es \
-                --enable-wayland \
                 --enable-systemd \
             "
             ;;
@@ -179,7 +178,6 @@ function run_all() {
     efl \
     evas_generic_loaders \
     emotion_generic_players \
-    eruler \
     terminology \
     rage \
     enlightenment \
